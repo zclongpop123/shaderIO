@@ -1,0 +1,1 @@
+C:\Python27\Lib\site-packages\PyQt5\pyuic5.bat shader_qt.ui > shader_qt.py
