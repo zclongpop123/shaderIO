@@ -83,7 +83,7 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
 
         node_path = str(self.line_outputShader.text())
         if node_path:
-            shader_core.export_sel_sg_nodes(node_path)        
+            shader_core.export_sel_sg_nodes(node_path)
 
 
 

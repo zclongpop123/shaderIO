@@ -169,7 +169,7 @@ def import_sg_data(data_file_path):
     '''
     '''
     if not os.path.isfile(data_file_path):
-        return dict()    
+        return dict()
 
     with open(data_file_path, 'r') as f:
         data = json.load(f)
