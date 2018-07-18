@@ -64,10 +64,12 @@ def export_sg_nodes(sg_nodes, sg_file_path):
         selection.add(sg)
 
     if selection.isEmpty():
-        return
+        return False
 
     OpenMaya.MGlobal.setActiveSelectionList(selection)
     OpenMaya.MFileIO.exportSelected(sg_file_path, None, True)
+
+    return True
 
 
 
@@ -75,7 +77,7 @@ def export_sg_nodes(sg_nodes, sg_file_path):
 def export_all_sg_nodes(sg_file_path):
     '''
     '''
-    export_sg_nodes(get_all_sg_nodes(), sg_file_path)
+    return export_sg_nodes(get_all_sg_nodes(), sg_file_path)
 
 
 
@@ -83,7 +85,7 @@ def export_all_sg_nodes(sg_file_path):
 def export_sel_sg_nodes(sg_file_path):
     '''
     '''
-    export_sg_nodes(get_sel_sg_nodes(), sg_file_path)
+    return export_sg_nodes(get_sel_sg_nodes(), sg_file_path)
 
 
 
@@ -151,7 +153,7 @@ def export_all_sg_data(data_file_path):
     '''
     '''
     sg_nodes = get_all_sg_nodes()
-    export_sg_data(sg_nodes, data_file_path)
+    return export_sg_data(sg_nodes, data_file_path)
 
 
 
@@ -160,7 +162,7 @@ def export_sel_sg_data(data_file_path):
     '''
     '''
     sg_nodes = get_sel_sg_nodes()
-    export_sg_data(sg_nodes, data_file_path)
+    return export_sg_data(sg_nodes, data_file_path)
 
 
 
@@ -174,6 +176,8 @@ def import_sg_data(data_file_path):
     with open(data_file_path, 'r') as f:
         data = json.load(f)
         return data
+    
+    return True
 
 
 
