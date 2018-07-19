@@ -30,6 +30,9 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def __init__(self, parent=get_maya_window()):
         super(ShaderIO, self).__init__(parent)
         self.setupUi(self)
+
+        self.__current_dir = ''
+
         self.show()
 
 
@@ -39,10 +42,11 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_setExportShaderPath_clicked(self, args=None):
         '''
         '''
-        filePath = shader_util.get_output_path('Maya ASCII (*.ma)', str(self.line_outputShader.text()))
+        filePath = shader_util.get_output_path('Maya ASCII (*.ma)', self.__current_dir)
         if filePath:
             self.line_outputShader.setText(filePath[0])
             self.line_outputData.setText('{0}.json'.format(os.path.splitext(filePath[0])[0]))
+            self.__current_dir = os.path.dirname(filePath[0])
 
 
 
@@ -51,9 +55,10 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_setExportDataPath_clicked(self, args=None):
         '''
         '''
-        filePath = shader_util.get_output_path('JSON File (*.json)', str(self.line_outputData.text()))
+        filePath = shader_util.get_output_path('JSON File (*.json)', self.__current_dir)
         if filePath:
             self.line_outputData.setText(filePath[0])
+            self.__current_dir = os.path.dirname(filePath[0])
 
 
 
@@ -92,10 +97,11 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_setImportShaderPath_clicked(self, args=None):
         '''
         '''
-        filePath = shader_util.get_input_path('Maya ASCII (*.ma)', str(self.line_inputShader.text()))
+        filePath = shader_util.get_input_path('Maya ASCII (*.ma)', self.__current_dir)
         if filePath:
             self.line_inputShader.setText(filePath[0])
             self.line_inputData.setText('{0}.json'.format(os.path.splitext(filePath[0])[0]))
+            self.__current_dir = os.path.dirname(filePath[0])
 
 
 
@@ -104,9 +110,10 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_setImportDataPath_clicked(self, args=None):
         '''
         '''
-        filePath = shader_util.get_input_path('JSON File (*.json)', str(self.line_inputData.text()))
+        filePath = shader_util.get_input_path('JSON File (*.json)', self.__current_dir)
         if filePath:
             self.line_inputData.setText(filePath[0])
+            self.__current_dir = os.path.dirname(filePath[0])
 
 
 
