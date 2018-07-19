@@ -176,7 +176,7 @@ def import_sg_data(data_file_path):
     with open(data_file_path, 'r') as f:
         data = json.load(f)
         return data
-    
+
     return True
 
 
