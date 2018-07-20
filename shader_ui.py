@@ -14,13 +14,25 @@ except:
     QtWidgets = QtGui
     shiboken2 = shiboken
 
-from . import shader_qt, shader_core, shader_util
+from . import shader_qt, dialog_qt, shader_core, shader_util
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 def get_maya_window():
     '''
     '''
     window = OpenMayaUI.MQtUtil.mainWindow()
     return shiboken2.wrapInstance(long(window), QtWidgets.QWidget)
+
+
+
+class Dialog(QtWidgets.QDialog, dialog_qt.Ui_Dialog):
+    '''
+    '''
+    def __init__(self, parent=get_maya_window(), message='Message'):
+        super(Dialog, self).__init__(parent)
+        self.setupUi(self)
+        self.messageLable.setText(message)
+        self.exec_()
+
 
 
 
@@ -67,6 +79,9 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_exportAll_clicked(self, args=None):
         '''
         '''
+        if not Dialog(message='Export all shaders and data ? ? ?').result():
+            return
+
         data_path = str(self.line_outputData.text())
         if data_path:
             shader_core.export_all_sg_data(data_path)
@@ -82,6 +97,9 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_exportSelection_clicked(self, args=None):
         '''
         '''
+        if not Dialog(message='Export selection shaders and data ? ? ?').result():
+            return
+
         data_path = str(self.line_outputData.text())
         if data_path:
             shader_core.export_sel_sg_data(data_path)
@@ -122,6 +140,9 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_import_clicked(self, args=None):
         '''
         '''
+        if not Dialog(message='Import shaders and data ? ? ?').result():
+            return
+
         sg_ns = shader_core.refrence_shader(str(self.line_inputShader.text()))
         geo_ns = str(self.line_lineGeoNamespace.text())
         shader_core.assign_shader(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=False)
@@ -133,6 +154,9 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
     def on_btn_importToSelection_clicked(self, args=None):
         '''
         '''
+        if not Dialog(message='Import shaders and data to selection objects ? ? ?').result():
+            return
+
         sg_ns = shader_core.refrence_shader(str(self.line_inputShader.text()))
         geo_ns = str(self.line_lineGeoNamespace.text())
         shader_core.assign_shader(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=True)
