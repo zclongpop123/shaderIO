@@ -24,11 +24,13 @@ def get_script_path():
 
 
 
+
 def get_maya_window():
     '''
     '''
     window = OpenMayaUI.MQtUtil.mainWindow()
     return shiboken2.wrapInstance(long(window), QtWidgets.QWidget)
+
 
 
 
@@ -38,10 +40,10 @@ class Dialog(QtWidgets.QDialog, dialog_qt.Ui_Dialog):
     def __init__(self, parent=get_maya_window(), message='Message'):
         super(Dialog, self).__init__(parent)
         self.setupUi(self)
-        
+
         self.IconButton.setIcon(QtGui.QIcon(os.path.join(get_script_path(), 'icons/question.png')))
         self.messageLable.setText(message)
-        
+
         self.exec_()
 
 
