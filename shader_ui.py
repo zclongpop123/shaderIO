@@ -3,10 +3,10 @@
 #      mail: zclongpop123@163.com
 #      time: Tue Jul 17 14:28:28 2018
 #========================================
-import os.path
+import os.path, inspect
 import maya.OpenMayaUI as OpenMayaUI
 try:
-    from PySide2 import QtWidgets, QtCore
+    from PySide2 import QtWidgets, QtCore, QtGui
     import shiboken2
 except:
     from PySide import QtGui, QtCore
@@ -16,6 +16,14 @@ except:
 
 from . import shader_qt, dialog_qt, shader_core, shader_util
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+def get_script_path():
+    '''
+    '''
+    script = inspect.getfile(inspect.currentframe())
+    return os.path.dirname(script)
+
+
+
 def get_maya_window():
     '''
     '''
@@ -30,7 +38,10 @@ class Dialog(QtWidgets.QDialog, dialog_qt.Ui_Dialog):
     def __init__(self, parent=get_maya_window(), message='Message'):
         super(Dialog, self).__init__(parent)
         self.setupUi(self)
+        
+        self.IconButton.setIcon(QtGui.QIcon(os.path.join(get_script_path(), 'icons/question.png')))
         self.messageLable.setText(message)
+        
         self.exec_()
 
 

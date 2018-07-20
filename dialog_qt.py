@@ -25,6 +25,7 @@ class Ui_Dialog(object):
 "    border:none;\n"
 "}")
         self.IconButton.setText("")
+        self.IconButton.setIconSize(QtCore.QSize(30, 30))
         self.IconButton.setObjectName("IconButton")
         self.horizontalLayout.addWidget(self.IconButton)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
