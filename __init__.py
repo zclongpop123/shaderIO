@@ -3,5 +3,5 @@
 #      mail: zclongpop123@163.com
 #      time: Tue Jul 17 14:36:18 2018
 #========================================
-from . import shader_ui, shader_core, shader_util
+from . import shaderUI, shaderCore, shaderUtil
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
