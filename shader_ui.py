@@ -97,11 +97,11 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
 
         data_path = str(self.line_outputData.text())
         if data_path:
-            shader_core.export_all_sg_data(data_path)
+            shader_core.export_all_shading_data(data_path)
 
         node_path = str(self.line_outputShader.text())
         if node_path:
-            shader_core.export_all_sg_nodes(node_path)
+            shader_core.export_all_shading_nodes(node_path)
 
 
 
@@ -115,11 +115,11 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
 
         data_path = str(self.line_outputData.text())
         if data_path:
-            shader_core.export_sel_sg_data(data_path)
+            shader_core.export_sel_shading_data(data_path)
 
         node_path = str(self.line_outputShader.text())
         if node_path:
-            shader_core.export_sel_sg_nodes(node_path)
+            shader_core.export_sel_shading_nodes(node_path)
 
 
 
@@ -158,7 +158,7 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
 
         sg_ns = shader_core.refrence_shader(str(self.line_inputShader.text()))
         geo_ns = str(self.line_lineGeoNamespace.text())
-        shader_core.assign_shader(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=False)
+        shader_core.set_shading_members(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=False)
 
 
 
@@ -172,4 +172,4 @@ class ShaderIO(QtWidgets.QMainWindow, shader_qt.Ui_MainWindow):
 
         sg_ns = shader_core.refrence_shader(str(self.line_inputShader.text()))
         geo_ns = str(self.line_lineGeoNamespace.text())
-        shader_core.assign_shader(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=True)
+        shader_core.set_shading_members(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=True)

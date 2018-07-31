@@ -7,20 +7,19 @@ import os, re, json
 import maya.cmds as mc
 import maya.OpenMaya as OpenMaya
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-def get_all_sg_nodes():
+def get_all_shading_nodes():
     '''
     get scene all shadingEngine nodes.
     '''
     iterator = OpenMaya.MItDependencyNodes(OpenMaya.MFn.kShadingEngine)
     while not iterator.isDone():
-        if not OpenMaya.MFnDependencyNode(iterator.item()).isDefaultNode():
-            yield iterator.item()
+        yield iterator.item()
         iterator.next()
 
 
 
 
-def get_sel_sg_nodes():
+def get_sel_shading_nodes():
     '''
     get shadingEngine nodes by selected geometrys.
     '''
@@ -34,12 +33,9 @@ def get_sel_sg_nodes():
     geo_mobject  = OpenMaya.MObject()
     while not geo_iterator.isDone():
         geo_iterator.getDependNode(geo_mobject)
+
         sg_iterator = OpenMaya.MItDependencyGraph(geo_mobject, OpenMaya.MFn.kShadingEngine, OpenMaya.MItDependencyGraph.kDownstream)
         while not sg_iterator.isDone():
-            if OpenMaya.MFnDependencyNode(sg_iterator.currentItem()).isDefaultNode():
-                sg_iterator.next()
-                continue
-
             yield sg_iterator.currentItem()
             sg_iterator.next()
 
@@ -48,12 +44,13 @@ def get_sel_sg_nodes():
 
 
 
-def export_sg_nodes(sg_nodes, sg_file_path):
+def export_shading_nodes(sg_nodes, sg_file_path):
     '''
     '''
     selection = OpenMaya.MSelectionList()
     for sg in sg_nodes:
-        selection.add(sg)
+        if not OpenMaya.MFnDependencyNode(sg).isDefaultNode():
+            selection.add(sg)
 
     if selection.isEmpty():
         return False
@@ -66,28 +63,29 @@ def export_sg_nodes(sg_nodes, sg_file_path):
 
 
 
-def export_all_sg_nodes(sg_file_path):
+def export_all_shading_nodes(sg_file_path):
     '''
     '''
-    return export_sg_nodes(get_all_sg_nodes(), sg_file_path)
+    return export_shading_nodes(get_all_shading_nodes(), sg_file_path)
 
 
 
 
-def export_sel_sg_nodes(sg_file_path):
+def export_sel_shading_nodes(sg_file_path):
     '''
     '''
-    return export_sg_nodes(get_sel_sg_nodes(), sg_file_path)
+    return export_shading_nodes(get_sel_shading_nodes(), sg_file_path)
 
 
 
 
-def get_sg_members(sg_node):
+def get_shading_members(sg_node):
     '''
     '''
     sg_api_mfn = OpenMaya.MFnSet(sg_node)
     geo_selection = OpenMaya.MSelectionList()
-    sg_api_mfn.getMembers(geo_selection, False)
+    if not sg_api_mfn.isDefaultNode():
+        sg_api_mfn.getMembers(geo_selection, False)
 
     return geo_selection
 
@@ -109,7 +107,7 @@ def get_select_strings(selection, cut_shape=True):
         if cut_shape:
             geo = dagpath.fullPathName().rsplit('|', 1)[0]
         else:
-            geo = dagpath.fullPathName().rsplit('.')[0]
+            geo = dagpath.fullPathName().rsplit('.', 1)[0]
 
         for x in strings:
             if x.count('.') == 0:
@@ -124,13 +122,13 @@ def get_select_strings(selection, cut_shape=True):
 
 
 
-def export_sg_data(sg_nodes, data_file_path):
+def export_shading_data(sg_nodes, data_file_path):
     '''
     '''
     data = dict()
     for sg in sg_nodes:
         sg_name    = OpenMaya.MFnDependencyNode(sg).name()
-        sg_members = get_select_strings(get_sg_members(sg))
+        sg_members = get_select_strings(get_shading_members(sg))
         if sg_members:
             data[sg_name] = sg_members
 
@@ -142,25 +140,25 @@ def export_sg_data(sg_nodes, data_file_path):
 
 
 
-def export_all_sg_data(data_file_path):
+def export_all_shading_data(data_file_path):
     '''
     '''
-    sg_nodes = get_all_sg_nodes()
-    return export_sg_data(sg_nodes, data_file_path)
+    sg_nodes = get_all_shading_nodes()
+    return export_shading_data(sg_nodes, data_file_path)
 
 
 
 
-def export_sel_sg_data(data_file_path):
+def export_sel_shading_data(data_file_path):
     '''
     '''
-    sg_nodes = get_sel_sg_nodes()
-    return export_sg_data(sg_nodes, data_file_path)
+    sg_nodes = get_sel_shading_nodes()
+    return export_shading_data(sg_nodes, data_file_path)
 
 
 
 
-def import_sg_data(data_file_path):
+def import_shading_data(data_file_path):
     '''
     '''
     if not os.path.isfile(data_file_path):
@@ -169,8 +167,6 @@ def import_sg_data(data_file_path):
     with open(data_file_path, 'r') as f:
         data = json.load(f)
         return data
-
-    return True
 
 
 
@@ -199,10 +195,10 @@ def refrence_shader(shader_file_path):
 
 
 
-def assign_shader(data_file_path, sg_ns=None, geo_ns=None, by_sel=False):
+def set_shading_members(data_file_path, sg_ns=None, geo_ns=None, by_sel=False):
     '''
     '''
-    data = import_sg_data(data_file_path)
+    data = import_shading_data(data_file_path)
 
     if by_sel:
         sel_list = OpenMaya.MSelectionList()
