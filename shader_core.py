@@ -24,32 +24,26 @@ def get_sel_sg_nodes():
     '''
     get shadingEngine nodes by selected geometrys.
     '''
+    #- get selected geometry
     mc.select(hi=True)
+    geo_selection = OpenMaya.MSelectionList()
+    OpenMaya.MGlobal.getActiveSelectionList(geo_selection)
 
-    geo_sel_list = OpenMaya.MSelectionList()
-    OpenMaya.MGlobal.getActiveSelectionList(geo_sel_list)
-
-    sg_sel_list = OpenMaya.MSelectionList()
-
-    geo_iter = OpenMaya.MItSelectionList(geo_sel_list)
-    mobject  = OpenMaya.MObject()
-    while not geo_iter.isDone():
-        geo_iter.getDependNode(mobject)
-
-        #-
-        graph_iter = OpenMaya.MItDependencyGraph(mobject, OpenMaya.MFn.kShadingEngine, OpenMaya.MItDependencyGraph.kDownstream)
-        while not graph_iter.isDone():
-            if OpenMaya.MFnDependencyNode(graph_iter.currentItem()).isDefaultNode():
-                graph_iter.next()
+    #-
+    geo_iterator = OpenMaya.MItSelectionList(geo_selection)
+    geo_mobject  = OpenMaya.MObject()
+    while not geo_iterator.isDone():
+        geo_iterator.getDependNode(geo_mobject)
+        sg_iterator = OpenMaya.MItDependencyGraph(geo_mobject, OpenMaya.MFn.kShadingEngine, OpenMaya.MItDependencyGraph.kDownstream)
+        while not sg_iterator.isDone():
+            if OpenMaya.MFnDependencyNode(sg_iterator.currentItem()).isDefaultNode():
+                sg_iterator.next()
                 continue
 
-            if not sg_sel_list.hasItem(graph_iter.currentItem()):
-                yield graph_iter.currentItem()
+            yield sg_iterator.currentItem()
+            sg_iterator.next()
 
-            sg_sel_list.add(graph_iter.currentItem())
-            graph_iter.next()
-
-        geo_iter.next()
+        geo_iterator.next()
 
 
 
@@ -59,8 +53,6 @@ def export_sg_nodes(sg_nodes, sg_file_path):
     '''
     selection = OpenMaya.MSelectionList()
     for sg in sg_nodes:
-        if get_sg_members(sg).isEmpty():
-            continue
         selection.add(sg)
 
     if selection.isEmpty():
@@ -94,10 +86,10 @@ def get_sg_members(sg_node):
     '''
     '''
     sg_api_mfn = OpenMaya.MFnSet(sg_node)
-    geo_sel_list = OpenMaya.MSelectionList()
-    sg_api_mfn.getMembers(geo_sel_list, False)
+    geo_selection = OpenMaya.MSelectionList()
+    sg_api_mfn.getMembers(geo_selection, False)
 
-    return geo_sel_list
+    return geo_selection
 
 
 
@@ -225,6 +217,14 @@ def assign_shader(data_file_path, sg_ns=None, geo_ns=None, by_sel=False):
 
         #- geometry
         geo_list = OpenMaya.MSelectionList()
+
+        if isinstance(geo_data, dict):
+            temp = list()
+            for geo, faces in geo_data.iteritems():
+                for face in faces:
+                    temp.append('{0}.{1}'.format(geo, face.split('.')[-1]))
+            geo_data = temp
+
         for geo in geo_data:
             if geo_ns:
                 geo = geo.replace('|', '|{0}:'.format(geo_ns))
