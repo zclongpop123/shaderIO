@@ -131,7 +131,8 @@ def export_sg_data(sg_nodes, data_file_path):
     for sg in sg_nodes:
         sg_name    = OpenMaya.MFnDependencyNode(sg).name()
         sg_members = get_select_strings(get_sg_members(sg))
-        data[sg_name] = sg_members
+        if sg_members:
+            data[sg_name] = sg_members
 
     with open(data_file_path, 'w') as f:
         json.dump(data, f, indent=4)
