@@ -130,6 +130,7 @@ def export_shading_data(sg_nodes, data_file_path):
         sg_name    = OpenMaya.MFnDependencyNode(sg).name()
         sg_members = get_select_strings(get_shading_members(sg))
         if sg_members:
+            sg_members.sort()
             data[sg_name] = sg_members
 
     with open(data_file_path, 'w') as f:
@@ -220,7 +221,7 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
             for geo, faces in geo_data.iteritems():
                 for face in faces:
                     temp.append('{0}.{1}'.format(geo, face.split('.')[-1]))
-            geo_data = temp
+            geo_data = temp = geo_data.keys()
 
         for geo in geo_data:
             if geo_ns:
