@@ -11,4 +11,4 @@ path in sys.path or sys.path.append(path)
 import shaderIO
 reload(shaderIO)
 
-shaderIO.shader_ui.ShaderIO()
+shaderIO.shaderUI.ShaderIO()
