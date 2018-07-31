@@ -195,7 +195,7 @@ def refrence_shader(shader_file_path):
 
 
 
-def set_shading_members(data_file_path, sg_ns=None, geo_ns=None, by_sel=False):
+def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=False):
     '''
     '''
     data = import_shading_data(data_file_path)
@@ -206,8 +206,8 @@ def set_shading_members(data_file_path, sg_ns=None, geo_ns=None, by_sel=False):
 
     for sg, geo_data in data.iteritems():
         #- shader sg
-        if sg_ns:
-            sg = '{0}:{1}'.format(sg_ns, sg) #- shader_SG -> material:shader_SG
+        if shader_ns:
+            sg = '{0}:{1}'.format(shader_ns, sg) #- shader_SG -> material:shader_SG
 
         if not mc.objExists(sg):
             continue
