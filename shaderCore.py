@@ -19,6 +19,7 @@ def get_all_shading_nodes():
 
 
 
+
 def get_sel_shading_nodes():
     '''
     get shadingEngine nodes by selected geometrys.
@@ -44,6 +45,7 @@ def get_sel_shading_nodes():
 
 
 
+
 def export_shading_nodes(sg_nodes, sg_file_path):
     '''
     '''
@@ -63,6 +65,7 @@ def export_shading_nodes(sg_nodes, sg_file_path):
 
 
 
+
 def export_all_shading_nodes(sg_file_path):
     '''
     '''
@@ -71,10 +74,12 @@ def export_all_shading_nodes(sg_file_path):
 
 
 
+
 def export_sel_shading_nodes(sg_file_path):
     '''
     '''
     return export_shading_nodes(get_sel_shading_nodes(), sg_file_path)
+
 
 
 
@@ -88,6 +93,7 @@ def get_shading_members(sg_node):
         sg_api_mfn.getMembers(geo_selection, False)
 
     return geo_selection
+
 
 
 
@@ -122,6 +128,7 @@ def get_select_strings(selection, cut_shape=True):
 
 
 
+
 def export_shading_data(sg_nodes, data_file_path):
     '''
     '''
@@ -141,11 +148,13 @@ def export_shading_data(sg_nodes, data_file_path):
 
 
 
+
 def export_all_shading_data(data_file_path):
     '''
     '''
     sg_nodes = get_all_shading_nodes()
     return export_shading_data(sg_nodes, data_file_path)
+
 
 
 
@@ -159,6 +168,7 @@ def export_sel_shading_data(data_file_path):
 
 
 
+
 def import_shading_data(data_file_path):
     '''
     '''
@@ -168,6 +178,7 @@ def import_shading_data(data_file_path):
     with open(data_file_path, 'r') as f:
         data = json.load(f)
         return data
+
 
 
 
@@ -196,6 +207,7 @@ def refrence_shader(shader_file_path):
 
 
 
+
 def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=False):
     '''
     '''
@@ -215,14 +227,6 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
 
         #- geometry
         geo_list = OpenMaya.MSelectionList()
-
-        if isinstance(geo_data, dict):
-            temp = list()
-            for geo, faces in geo_data.iteritems():
-                for face in faces:
-                    temp.append('{0}.{1}'.format(geo, face.split('.')[-1]))
-            geo_data = temp = geo_data.keys()
-
         for geo in geo_data:
             if geo_ns:
                 geo = geo.replace('|', '|{0}:'.format(geo_ns))
