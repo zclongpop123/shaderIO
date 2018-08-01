@@ -6,6 +6,7 @@
 import os, re, json
 import maya.cmds as mc
 import maya.OpenMaya as OpenMaya
+from . import shaderUtil
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 def get_all_shading_nodes():
     '''
@@ -217,6 +218,7 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
         sel_list = OpenMaya.MSelectionList()
         OpenMaya.MGlobal.getActiveSelectionList(sel_list)
 
+    shaderUtil.startProgress(len(data))
     for sg, geo_data in data.iteritems():
         #- shader sg
         if shader_ns:
@@ -226,6 +228,8 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
             continue
 
         #- geometry
+        shaderUtil.moveProgress('Set shading members for - {0}'.format(sg))
+
         geo_list = OpenMaya.MSelectionList()
         for geo in geo_data:
             if geo_ns:
@@ -242,5 +246,8 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
             geo_list.intersect(sel_list)
 
         mc.sets(get_select_strings(geo_list, cut_shape=False), e=True, forceElement=sg)
+
+
+    shaderUtil.endProgress()
 
     return True

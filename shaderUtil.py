@@ -5,7 +5,25 @@
 #========================================
 import os.path
 import maya.cmds as mc
+import maya.mel as mel
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+PROGRESSBAR = mel.eval('string $temp = $gMainProgressBar;')
+
+def startProgress(count):
+    mc.progressBar(PROGRESSBAR, e=True, bp=True, maxValue=max(count, 1))
+
+
+
+def moveProgress(message):
+    mc.progressBar(PROGRESSBAR, e=True, step=1, st=message)
+
+
+
+def endProgress():
+    mc.progressBar(PROGRESSBAR, e=True, ep=True)
+
+
+
 def get_start_dir(start_dir):
     '''
     '''
