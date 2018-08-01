@@ -3,10 +3,31 @@
 #      mail: zclongpop123@163.com
 #      time: Tue Jul 17 14:51:24 2018
 #========================================
-import os.path
+import os.path, inspect
 import maya.cmds as mc
 import maya.mel as mel
+import maya.OpenMayaUI as OpenMayaUI
+from PySide2 import QtWidgets
+import shiboken2
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+def get_script_path():
+    '''
+    '''
+    script = inspect.getfile(inspect.currentframe().f_back)
+    return os.path.dirname(script)
+
+
+
+
+def get_maya_window():
+    '''
+    '''
+    window = OpenMayaUI.MQtUtil.mainWindow()
+    return shiboken2.wrapInstance(long(window), QtWidgets.QWidget)
+
+
+
+
 PROGRESSBAR = mel.eval('string $temp = $gMainProgressBar;')
 
 def startProgress(count):

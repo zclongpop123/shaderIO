@@ -3,56 +3,16 @@
 #      mail: zclongpop123@163.com
 #      time: Tue Jul 17 14:28:28 2018
 #========================================
-import os.path, inspect
+import os.path
 import maya.OpenMayaUI as OpenMayaUI
-try:
-    from PySide2 import QtWidgets, QtCore, QtGui
-    import shiboken2
-except:
-    from PySide import QtGui, QtCore
-    import shiboken
-    QtWidgets = QtGui
-    shiboken2 = shiboken
-
-from . import shaderQt, dialogQt, shaderCore, shaderUtil
+from PySide2 import QtWidgets, QtCore, QtGui
+import shiboken2
+from . import shaderQt, dialogUI, shaderCore, shaderUtil
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-def get_script_path():
-    '''
-    '''
-    script = inspect.getfile(inspect.currentframe())
-    return os.path.dirname(script)
-
-
-
-
-def get_maya_window():
-    '''
-    '''
-    window = OpenMayaUI.MQtUtil.mainWindow()
-    return shiboken2.wrapInstance(long(window), QtWidgets.QWidget)
-
-
-
-
-class Dialog(QtWidgets.QDialog, dialogQt.Ui_Dialog):
-    '''
-    '''
-    def __init__(self, parent=get_maya_window(), message='Message'):
-        super(Dialog, self).__init__(parent)
-        self.setupUi(self)
-
-        self.IconButton.setIcon(QtGui.QIcon(os.path.join(get_script_path(), 'icons/question.png')))
-        self.messageLable.setText(message)
-
-        self.exec_()
-
-
-
-
 class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
     '''
     '''
-    def __init__(self, parent=get_maya_window()):
+    def __init__(self, parent=shaderUtil.get_maya_window()):
         super(ShaderIO, self).__init__(parent)
         self.setupUi(self)
 
@@ -92,7 +52,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
     def on_btn_exportAll_clicked(self, args=None):
         '''
         '''
-        if not Dialog(message='Export all shaders and data ? ? ?').result():
+        if not dialogUI.Dialog(message='Export all shaders and data ? ? ?').result():
             return
 
         data_path = str(self.line_outputData.text())
@@ -110,7 +70,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
     def on_btn_exportSelection_clicked(self, args=None):
         '''
         '''
-        if not Dialog(message='Export selection shaders and data ? ? ?').result():
+        if not dialogUI.Dialog(message='Export selection shaders and data ? ? ?').result():
             return
 
         data_path = str(self.line_outputData.text())
@@ -153,7 +113,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
     def on_btn_import_clicked(self, args=None):
         '''
         '''
-        if not Dialog(message='Import shaders and data ? ? ?').result():
+        if not dialogUI.Dialog(message='Import shaders and data ? ? ?').result():
             return
 
         sg_ns = shaderCore.refrence_shader(str(self.line_inputShader.text()))
@@ -167,7 +127,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
     def on_btn_importToSelection_clicked(self, args=None):
         '''
         '''
-        if not Dialog(message='Import shaders and data to selection objects ? ? ?').result():
+        if not dialogUI.Dialog(message='Import shaders and data to selection objects ? ? ?').result():
             return
 
         sg_ns = shaderCore.refrence_shader(str(self.line_inputShader.text()))
