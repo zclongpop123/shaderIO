@@ -230,22 +230,25 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
         #- geometry
         shaderUtil.moveProgress('Set shading members for - {0}'.format(sg))
 
-        geo_list = OpenMaya.MSelectionList()
+        geo_selection = OpenMaya.MSelectionList()
         for geo in geo_data:
             if geo_ns:
                 geo = geo.replace('|', '|{0}:'.format(geo_ns))
 
             for i in range(5):
                 try:
-                    geo_list.add('{0}*{1}'.format('*:'*i, geo))
+                    geo_selection.add('{0}*{1}'.format('*:'*i, geo))
                     break
                 except:
                     pass
 
         if by_sel:
-            geo_list.intersect(sel_list)
+            geo_selection.intersect(sel_list)
 
-        mc.sets(get_select_strings(geo_list, cut_shape=False), e=True, forceElement=sg)
+        if not geo_selection.isEmpty():
+            mc.sets(get_select_strings(geo_selection, cut_shape=False), e=True, forceElement=sg)
+        else:
+            print 'No memebers for - {0}'.format(sg)
 
 
     shaderUtil.endProgress()
