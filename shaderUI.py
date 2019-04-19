@@ -30,7 +30,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
         filePath = shaderUtil.get_output_path('Maya ASCII (*.ma)', self.__current_dir)
         if filePath:
             self.line_outputShader.setText(filePath[0])
-            self.line_outputData.setText('{0}.json'.format(os.path.splitext(filePath[0])[0]))
+            self.line_outputData.setText('{0}/mapping.json'.format(os.path.dirname(filePath[0])))
             self.__current_dir = os.path.dirname(filePath[0])
 
 
@@ -91,7 +91,7 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
         filePath = shaderUtil.get_input_path('Maya ASCII (*.ma)', self.__current_dir)
         if filePath:
             self.line_inputShader.setText(filePath[0])
-            self.line_inputData.setText('{0}.json'.format(os.path.splitext(filePath[0])[0]))
+            self.line_inputData.setText('{0}/mapping.json'.format(os.path.dirname(filePath[0])))
             self.__current_dir = os.path.dirname(filePath[0])
 
 
