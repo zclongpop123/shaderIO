@@ -254,3 +254,43 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
     shaderUtil.endProgress()
 
     return True
+
+
+
+
+def set_arnold_attribute(attr_file_path, geo_ns=None, by_sel=False):
+    '''
+    '''
+    if not os.path.isfile(attr_file_path):
+        return
+
+    #- set arnold attribute data
+    attr_data = dict()
+    with open(attr_file_path, 'r') as f:
+        attr_data = json.load(f)
+
+    for geo, attrbutes in attr_data.iteritems():
+        if geo_ns:
+            geo = geo.replace('|', '|{0}:'.format(geo_ns))
+        if not mc.objExists(geo):
+            continue
+
+        for attr, value in attrbutes.iteritems():
+            shapes = mc.listRelatives(geo, s=True, path=True)
+            if shapes:
+                if re.match('mtoa_', attr) and not mc.attributeQuery(attr, n=shapes[0], ex=True):
+                    mc.addAttr(shapes[0], ln=attr[:-1], at="double3")
+                    mc.addAttr(shapes[0], ln=attr[:-1]+'X', at="double", p=attr[:-1])
+                    mc.addAttr(shapes[0], ln=attr[:-1]+'Y', at="double", p=attr[:-1])
+                    mc.addAttr(shapes[0], ln=attr[:-1]+'Z', at="double", p=attr[:-1])
+
+            if isinstance(value, basestring):
+                try:
+                    mc.setAttr('{0}.{1}'.format(geo, attr), value, typ='string')
+                except:
+                    pass
+            else:
+                try:
+                    mc.setAttr('{0}.{1}'.format(geo, attr), value)
+                except:
+                    pass

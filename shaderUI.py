@@ -120,6 +120,9 @@ class ShaderIO(QtWidgets.QMainWindow, shaderQt.Ui_MainWindow):
         geo_ns = str(self.line_lineGeoNamespace.text())
         shaderCore.set_shading_members(str(self.line_inputData.text()), sg_ns, geo_ns, by_sel=False)
 
+        attr_file_path = os.path.join(os.path.dirname(str(self.line_inputShader.text())), 'arnoldAttr.json')
+        shaderCore.set_arnold_attribute(attr_file_path, geo_ns)
+
 
 
 
