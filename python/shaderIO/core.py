@@ -6,7 +6,7 @@
 import os, re, json
 import maya.cmds as mc
 import maya.OpenMaya as OpenMaya
-from . import shaderUtil
+from . import util
 #--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 def get_all_shading_nodes():
     '''
@@ -130,7 +130,7 @@ def get_select_strings(selection, cut_shape=True):
 
 
 
-def export_shading_data(sg_nodes, data_file_path):
+def write_shading_data(sg_nodes, data_file_path):
     '''
     '''
     data = dict()
@@ -154,7 +154,7 @@ def export_all_shading_data(data_file_path):
     '''
     '''
     sg_nodes = get_all_shading_nodes()
-    return export_shading_data(sg_nodes, data_file_path)
+    return write_shading_data(sg_nodes, data_file_path)
 
 
 
@@ -164,13 +164,13 @@ def export_sel_shading_data(data_file_path):
     '''
     '''
     sg_nodes = get_sel_shading_nodes()
-    return export_shading_data(sg_nodes, data_file_path)
+    return write_shading_data(sg_nodes, data_file_path)
 
 
 
 
 
-def import_shading_data(data_file_path):
+def read_shading_data(data_file_path):
     '''
     '''
     if not os.path.isfile(data_file_path):
@@ -194,14 +194,11 @@ def refrence_shader(shader_file_path):
         namespace = mc.file(shader_file_path, q=True, ns=True)
 
     else:
-        selection = OpenMaya.MSelectionList()
-        OpenMaya.MGlobal.getActiveSelectionList(selection)
-
+        selection = mc.ls(sl=True)
         basename = os.path.splitext(os.path.basename(shader_file_path))[0]
-        OpenMaya.MFileIO.reference(shader_file_path, False, False, basename)
+        mc.file(shader_file_path, r=True, ns=basename)
         namespace = mc.file(shader_file_path, q=True, ns=True)
-
-        OpenMaya.MGlobal.setActiveSelectionList(selection)
+        mc.select(selection, r=True)
 
     return namespace
 
@@ -212,13 +209,13 @@ def refrence_shader(shader_file_path):
 def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=False):
     '''
     '''
-    data = import_shading_data(data_file_path)
+    data = read_shading_data(data_file_path)
 
     if by_sel:
         sel_list = OpenMaya.MSelectionList()
         OpenMaya.MGlobal.getActiveSelectionList(sel_list)
 
-    shaderUtil.startProgress(len(data))
+    util.startProgress(len(data))
     for sg, geo_data in data.iteritems():
         #- shader sg
         if shader_ns:
@@ -228,7 +225,7 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
             continue
 
         #- geometry
-        shaderUtil.moveProgress('Set shading members for - {0}'.format(sg))
+        util.moveProgress('Set shading members for - {0}'.format(sg))
 
         geo_selection = OpenMaya.MSelectionList()
         for geo in geo_data:
@@ -251,7 +248,7 @@ def set_shading_members(data_file_path, shader_ns=None, geo_ns=None, by_sel=Fals
             print 'No memebers for - {0}'.format(sg)
 
 
-    shaderUtil.endProgress()
+    util.endProgress()
 
     return True
 

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'shader_qt.ui'
+# Form implementation generated from reading ui file 'main_widgets.ui'
 #
-# Created by: PyQt5 UI code generator 5.7
+# Created: Fri Oct 29 11:13:03 2021
+#      by: pyside2-uic  running on PySide2 2.0.0~alpha0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -197,26 +198,25 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Shader IO"))
-        self.groupBox.setTitle(_translate("MainWindow", " Export "))
-        self.line_outputShader.setPlaceholderText(_translate("MainWindow", "ma"))
-        self.label_2.setText(_translate("MainWindow", "Data Path:"))
-        self.line_outputData.setPlaceholderText(_translate("MainWindow", "json"))
-        self.label.setText(_translate("MainWindow", "Shader Path:"))
-        self.btn_setExportShaderPath.setText(_translate("MainWindow", "..."))
-        self.btn_setExportDataPath.setText(_translate("MainWindow", "..."))
-        self.btn_exportAll.setText(_translate("MainWindow", "Export All"))
-        self.btn_exportSelection.setText(_translate("MainWindow", "Export Selection"))
-        self.groupBox_2.setTitle(_translate("MainWindow", " Import "))
-        self.line_inputShader.setPlaceholderText(_translate("MainWindow", "ma"))
-        self.label_3.setText(_translate("MainWindow", "Data Path:"))
-        self.btn_setImportDataPath.setText(_translate("MainWindow", "..."))
-        self.label_4.setText(_translate("MainWindow", "Shader Path:"))
-        self.line_inputData.setPlaceholderText(_translate("MainWindow", "json"))
-        self.btn_setImportShaderPath.setText(_translate("MainWindow", "..."))
-        self.label_5.setText(_translate("MainWindow", "Geometry NS:"))
-        self.line_lineGeoNamespace.setPlaceholderText(_translate("MainWindow", "namespace"))
-        self.btn_import.setText(_translate("MainWindow", "Import"))
-        self.btn_importToSelection.setText(_translate("MainWindow", "Import to Selection"))
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Shader IO", None, -1))
+        self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", " Export ", None, -1))
+        self.line_outputShader.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "ma", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "Data Path:", None, -1))
+        self.line_outputData.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "json", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "Shader Path:", None, -1))
+        self.btn_setExportShaderPath.setText(QtWidgets.QApplication.translate("MainWindow", "...", None, -1))
+        self.btn_setExportDataPath.setText(QtWidgets.QApplication.translate("MainWindow", "...", None, -1))
+        self.btn_exportAll.setText(QtWidgets.QApplication.translate("MainWindow", "Export All", None, -1))
+        self.btn_exportSelection.setText(QtWidgets.QApplication.translate("MainWindow", "Export Selection", None, -1))
+        self.groupBox_2.setTitle(QtWidgets.QApplication.translate("MainWindow", " Import ", None, -1))
+        self.line_inputShader.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "ma", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("MainWindow", "Data Path:", None, -1))
+        self.btn_setImportDataPath.setText(QtWidgets.QApplication.translate("MainWindow", "...", None, -1))
+        self.label_4.setText(QtWidgets.QApplication.translate("MainWindow", "Shader Path:", None, -1))
+        self.line_inputData.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "json", None, -1))
+        self.btn_setImportShaderPath.setText(QtWidgets.QApplication.translate("MainWindow", "...", None, -1))
+        self.label_5.setText(QtWidgets.QApplication.translate("MainWindow", "Geometry NS:", None, -1))
+        self.line_lineGeoNamespace.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "namespace", None, -1))
+        self.btn_import.setText(QtWidgets.QApplication.translate("MainWindow", "Import", None, -1))
+        self.btn_importToSelection.setText(QtWidgets.QApplication.translate("MainWindow", "Import to Selection", None, -1))
 
